@@ -1,0 +1,24 @@
+from keras import layers
+from keras import models
+model= models.Sequential()
+model.add(layers.Conv2D(32, (3, 3), activation='relu',
+input_shape=(96, 96,1)))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Dropout(0.25))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Dropout(0.25))
+model.add(layers.Flatten())
+model.add(layers.Dense(512, activation='relu'))
+model.add(layers.Dropout(0.5))
+model.add(layers.Dense(128, activation='relu'))
+model.add(layers.Dense(62, activation='softmax'))
+
+
+from keras import optimizers 
+from tensorflow import keras
+opt= keras.optimizers.Adam(learning_rate=0.001)
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+history=model.fit(array_images, one_hot_labels, batch_size=16, epochs=30, validation_split= 0.3, shuffle=True)
