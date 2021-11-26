@@ -1,0 +1,76 @@
+import pandas as pd
+import numpy as np
+from skimage.transform import resize
+from skimage.io import imread, imsave
+import os
+import matplotlib.pyplot as plt
+from keras import layers
+from keras import models
+from keras import optimizers 
+from tensorflow import keras
+
+
+#original raw dataset
+original_dir = "......"
+
+resized_dataset = os.path.join(original_dir,'resized_dataset')
+os.mkdir(resized_dataset)
+
+train_dir=os.path.join(resized_dataset,'resized_train')
+os.mkdir(train_dir)
+
+test_dir=os.path.join(resized_dataset,'resized_test')
+os.mkdir(test_dir)
+
+# resize images
+fnames=['{}.Bmp'.format(i) for i in range(1,6284)]
+for fname in fnames:
+    src=os.path.join(original_dir+'/train', fname)
+    dst=os.path.join(train_dir,fname)
+    image = imread( src )
+    imageResized = resize(image,(96,96))
+    imsave(dst, imageResized )
+
+#resize test images
+fnames=['{}.Bmp'.format(i) for i in range(6284,10000)]
+for fname in fnames:
+    dst=os.path.join(test_dir,fname)
+    image = imread( src )
+    imageResized = resize(image,(96,96))
+    imsave(dst, imageResized )
+
+#one-hot encoding
+labels= pd.read_csv('....')
+train_categories=labels.unique()
+n_categories=labels.nunique()
+n_labels= len(labels)
+one_hot_labels= np.zeros((n_labels, n_categories))
+
+for i in range(n_labels):
+  j= np.where(train_categories==labels[i])
+  one_hot_labels[i,j]=1
+
+# train- rbg to grey scale
+path='...../train'
+org_path='....../grey_resized_train'
+fnames=['{}.Bmp'.format(i) for i in range(1, 6284)]
+for fname in fnames:
+  src= os.path.join(path, fname )
+  dst= os.path.join(org_path, fname)
+  img= imread(src)
+  img= resize(img, (96,96))
+  img = color.rgb2gray(img)
+  imsave(dst, img)
+
+
+# test-rgb to grey scale
+path='...../test'
+org_path='....../grey_resized_test'
+fnames=['{}.Bmp'.format(i) for i in range(6284, 10000)]
+for fname in fnames:
+  src= os.path.join(path, fname )
+  dst= os.path.join(org_path, fname)
+  img= imread(src)
+  img= resize(img, (96,96))
+  img = color.rgb2gray(img)
+  imsave(dst, img)
