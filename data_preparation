@@ -74,3 +74,26 @@ for fname in fnames:
   img= resize(img, (96,96))
   img = color.rgb2gray(img)
   imsave(dst, img)
+
+
+
+train_array_images= list()
+path='....../grey_resized_train'
+fnames=['{}.Bmp'.format(i) for i in range(6284,10000)]
+for fname in fnames:
+  src = os.path.join(path, fname)
+  image = plt.imread(src)
+  image = image.astype('float32')/255
+  train_array_images.append(image)
+  
+  
+test_array_images= list()
+path='..../grey_resized_test'
+fnames=['{}.Bmp'.format(i) for i in range(1,6284)]
+for fname in fnames:
+  src = os.path.join(path, fname)
+  image = plt.imread(src)
+  image = image.astype('float32')/255
+  test_array_images.append(image)
+  
+  
